@@ -4,12 +4,24 @@ namespace app\controller;
 
 use app\BaseController;
 use Firebase\JWT\JWT;
+use app\Request;
+use think\facade\Db;
 
 class Index extends BaseController
 {
     public function index()
     {
         dump('this is index');
+    }
+    //获取首页数据
+    public function get_index_message()
+    {
+        $msg = '访问失败！';
+        $imglist = Db::name('xz_scroll_imgs')->select();
+        $product = [1];
+        if ($imglist && $product)
+            $msg = 'seccess';
+        return json(['imglist' => $imglist, 'product' => $product, 'msg' => $msg]);
     }
 
     // token鉴权
