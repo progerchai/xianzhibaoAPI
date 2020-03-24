@@ -53,7 +53,7 @@ class Publish extends BaseController
         }
         //插入成功
         if ($specification && $pid) {
-            return json(['data' => 1, 'msg' => '存储成功']);
+            return json(['data' => ['specific_id' => $specification, 'pid' => $pid, 'classify_id' => $classify_id], 'msg' => '存储成功']);
         }
     }
     //上传图片接口
