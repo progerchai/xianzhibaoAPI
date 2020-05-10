@@ -53,6 +53,24 @@ class Index extends BaseController
         $detail['pid'] = $pid;
         return json(['detail' => $detail]);
     }
+    //获取分类页商品详情数据
+    public function get_classify_products(Request $request)
+    {
+        $data = $request->param();
+        $classifyId = $data['classifyId'];
+        $productList = Db::name('xz_goods')->where('classify_id', $classifyId)->select();
+        $classifyList = [];
+        if (sizeof($productList)) {
+            for ($i = 0; $i < sizeof($productList); $i++) {
+                $detail = Db::name('xz_specification')->where('specific_id', $productList[$i]["specific_id"])->select()[0];
+                $detail['classifyId'] = $data['classifyId'];
+                array_push($classifyList, $detail);
+            }
+
+            return json(['classifyList' => $classifyList]);
+        } else
+            return json(["classifyList" => []]);
+    }
     // token鉴权
     public function jwt()
     {
