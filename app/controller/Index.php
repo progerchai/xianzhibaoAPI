@@ -41,12 +41,18 @@ class Index extends BaseController
             }
         }
         return json(['goods' => $goods]);
-        // $product = [1];
-        // if ($imglist && $product)
-        //     $msg = 'seccess';
-        // return json(['imglist' => $imglist, 'product' => $product, 'msg' => $msg]);
     }
 
+    //获取商品详情数据
+    public function get_product_detail(Request $request)
+    {
+        $data = $request->param();
+        $pid = $data['pid'];
+        $specific_id = Db::name('xz_goods')->where('pid', $pid)->select()[0];
+        $detail = Db::name('xz_specification')->where('specific_id', $specific_id["specific_id"])->select()[0];
+        $detail['pid'] = $pid;
+        return json(['detail' => $detail]);
+    }
     // token鉴权
     public function jwt()
     {
