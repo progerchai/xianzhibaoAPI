@@ -23,6 +23,29 @@ class Index extends BaseController
             $msg = 'seccess';
         return json(['imglist' => $imglist, 'product' => $product, 'msg' => $msg]);
     }
+    //获取首页商品数据
+    public function get_index_products()
+    {
+        $msg = '访问失败！';
+        $goodslist = Db::name('xz_goods')->select();
+        $specificlist = Db::name('xz_specification')->select();
+        $goods = [];
+        for ($i = 0; $i < sizeof($goodslist); $i++) {
+            for ($j = 0; $j < sizeof($specificlist); $j++) {
+                $obj = null;
+                if ($goodslist[$i]['specific_id'] == $specificlist[$j]['specific_id']) {
+                    $obj = $specificlist[$j];
+                    $obj['pid'] = $goodslist[$i]['pid'];
+                    array_push($goods, $obj);
+                }
+            }
+        }
+        return json(['goods' => $goods]);
+        // $product = [1];
+        // if ($imglist && $product)
+        //     $msg = 'seccess';
+        // return json(['imglist' => $imglist, 'product' => $product, 'msg' => $msg]);
+    }
 
     // token鉴权
     public function jwt()
